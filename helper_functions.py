@@ -233,7 +233,7 @@ def sweep_summary(df, window, param):
 
     i_thalf = np.zeros(len(groups))
     for i, grp in df.groupby('sweep'):
-        i_thalf[i-1] = grp['i'][grp['ti'] == 5125.0]   ########  Change this number if you want to change where you measure your current #######
+        i_thalf[i-1] = grp['i'][grp['ti'] == 250.0]   ########  Change this number if you want to change where you measure your current #######
 
     if param == 'None':
         return
