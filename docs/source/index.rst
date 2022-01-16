@@ -6,9 +6,9 @@ patchmaster software using python. Currently, the package includes p50 and singl
 channel analysis. 
 
 For an example analysis pipeline see the Jupyter Notebook in the examples folder.
-You can view the notebook online by going to https://nbviewer.org/ and pasting the
+You can view the notebook online with interactive plots by going to https://nbviewer.org/ and pasting the
 following link: 
-
+| https://github.com/neuro-myoung/PressureClampAnalysis/blob/5d5caf1db7a36e06912cb533b474fb1b7ad54898/examples/pressure_clamp_analysis.ipynb
 
 .. toctree::
    :maxdepth: 2
