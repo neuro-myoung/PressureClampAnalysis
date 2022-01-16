@@ -1,4 +1,7 @@
-<img src="https://github.com/neuro-myoung/pressureclamp/blob/eecdad49ea2ab935c27de9c0df7e95932e13f081/docs/source/imgs/logo.png" width="400" alt="pressureclamp logo">
+
+<p align="center">
+  <img src="https://github.com/neuro-myoung/pressureclamp/blob/eecdad49ea2ab935c27de9c0df7e95932e13f081/docs/source/imgs/logo.png" width="400" alt="pressureclamp logo">
+</p>
 
 This is a small package meant to analyze pressure clamp data generated in HEKA patchmaster software using python. Currently, the package includes p50 and single- channel analysis.
 
