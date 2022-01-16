@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "src"
+name = "pressureclamp"
 version = "0.1.0"
 description = "A package for analyzing pressure clamp electrophysiology data acquired in HEKA patchmaster."
 authors = ["Michael Young <neuromyoung@gmail.com>"]
