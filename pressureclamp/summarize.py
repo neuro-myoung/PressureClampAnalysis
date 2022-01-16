@@ -1,3 +1,6 @@
+import numpy as np
+import pandas as pd
+
 def sweep_summary(df, window, param):
     """
     This function will summarize sweep data based on a selected summary statistic.

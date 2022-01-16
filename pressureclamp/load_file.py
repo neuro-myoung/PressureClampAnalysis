@@ -1,3 +1,7 @@
+import pandas as pd
+import numpy as np
+import re
+
 def load_file(path, colnames=[]):
     """
     This function will parse a standard HEKA .asc file into a pandas dataframe.
