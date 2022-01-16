@@ -22,7 +22,7 @@ copyright = '2022, Michael Young'
 author = 'Michael Young'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.1'
+release = '0.1.3'
 
 
 # -- General configuration ---------------------------------------------------
