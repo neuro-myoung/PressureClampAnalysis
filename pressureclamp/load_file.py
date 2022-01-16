@@ -2,15 +2,22 @@ import pandas as pd
 import numpy as np
 import re
 
-def load_file(path, colnames=[]):
+def load_file(path, header=[]):
     """
     This function will parse a standard HEKA .asc file into a pandas dataframe.
 
-    Arguments: 
-    path - a stringIO input of a standard HEKA output .asc file.
-
-    Returns:
-    df - The file reformatted into a dataframe.
+    Parameters
+    ---------- 
+    path : string 
+        String input of path to a standard HEKA output .asc file.
+    
+    headers : list
+        A list or iterable of string column headers. The list of headers must match the number of columns in the dataframe.
+        
+    Returns
+    ---------
+    dataframe
+        The file reformatted into a dataframe with the given headers.
     """
 
     lineIndices = []            
@@ -32,23 +39,14 @@ def load_file(path, colnames=[]):
     # Use the difference in file with and without headers to find nSweeps
     nSweeps = int((len(rawFile)-len(processedFile)-1)/2)   
 
-    if len(colnames) == 0: 
-        if len(processedFile[0]) == 5:
-            colnames = ['index','ti','i','tp','p']
-        else:
-            colnames = ['index','ti','i','tp','p','tv','v']
-
-    df = pd.DataFrame(columns=colnames, data=processedFile)
+    if len(processedFile[0]) != len(header):
+        raise Exception("Header length must match number of columns in dataframe")
+        
+    df = pd.DataFrame(data=processedFile, columns=header)
     df = df.apply(pd.to_numeric)
     df = df.dropna(axis=0)
 
     # Make new column with sweep identity
     df['sweep'] = np.repeat(np.arange(nSweeps) + 1, len(df)/nSweeps)
     
-    # Change units to something easier to work with
-    df['p'] = df['p'] / 0.02
-    df['ti'] *= 1000
-    df['i'] *= 1e12
-    df['tp'] *= 1000
-
     return df

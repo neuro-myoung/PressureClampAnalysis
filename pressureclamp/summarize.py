@@ -1,57 +1,66 @@
 import numpy as np
 import pandas as pd
 
-def sweep_summary(df, window, param):
+def sweep_summary(df, stim, col, ref, window, param="Max"):
     """
-    This function will summarize sweep data based on a selected summary statistic.
+    This function will summarize sweep data of a specified column of the dataframe based on a provided window within a reference column.
 
-    Arguments: 
-    df - a pandas dataframe with columns p, ti, tp, sweep, and i.
-    window - an iterable with the start and end coordinates of the baseline window.
-    param - a summary statistic by which to summarize the data ('Max', 'Min' or 'Mean' currently accepted).
+    Arguments
+    -------------------
+    df: dataframe
+        A pandas dataframe with columns ``col`` and ``ref``.
+    stim: string
+        A string indicating the name of the stimulus column.
+    col: string
+        A string indicating the name of the column to be summarized.
+    ref: string
+        A reference column over-which to find the window.
+    window: list
+        An iterable with the start and end coordinates of the region over-which the sweep is to be summarized.
+    param: string
+        A string of either ``"Mean", "Min", or "Max"`` indicating the desired summary statistic. The default value is "Min"
     
-    Returns:
-    df - a dataframe of summary data by sweep.
+    Returns
+    --------------------
+    dataframe
+        A dataframe summarizing the desired ``col`` across sweeps over a given ``window`` on a reference column, ``ref``.
     """
 
-    subsetDf = df.query('ti >= @window[0] and ti < @window[1]')
+    subsetDf = df.query(f'{ref} >= @window[0] and {ref} < @window[1]')
     groups = subsetDf.groupby('sweep')
-
-    i_thalf = np.zeros(len(groups))
-    for i, grp in df.groupby('sweep'):
-        i_thalf[i-1] = grp['i'][grp['ti'] == 250.0]   ########  Change this number if you want to change where you measure your current #######
 
     if param == 'None':
         return
     elif param == 'Mean':
-        iMean = groups['i'].mean()
+        iMean = groups[col].mean()
         summaryDict = {
-            'pressure': np.abs(groups['p'].median()),
+            stim: np.abs(groups[stim].median()),
             'mean_i': iMean,
             'mean_norm_i': np.abs(iMean)/np.max(np.abs(iMean)),
-            'stdev_i': groups['i'].std()
+            'stdev_i': groups[col].std()
         }
 
         summaryDf = pd.DataFrame(summaryDict)
 
-    elif param == 'Min':
-        iMin = groups['i'].min()
+ 
+    elif param == 'Max':
+        iMax = groups[col].max()
         summaryDict = {
-            'pressure': np.abs(groups['p'].median()),
-            'min_i': iMin,
-            'min_norm_i': iMin/np.min(iMin),
-            'i_thalf': i_thalf,
-            'inactivation': i_thalf/iMin
-        }
-
-        summaryDf = pd.DataFrame(summaryDict)
-    else:
-        iMax = groups['i'].max()
-        summaryDict = {
-            'pressure': np.abs(groups['p'].median()),
+            stim: np.abs(groups[stim].median()),
             'max_i': iMax,
             'max_norm_i': iMax/np.max(iMax)
         }
 
         summaryDf = pd.DataFrame(summaryDict)
+        
+    else:
+        iMin = groups[col].min()
+        summaryDict = {
+            stim: np.abs(groups[stim].median()),
+            'min_i': iMin,
+            'min_norm_i': iMin/np.min(iMin),
+        }
+
+        summaryDf = pd.DataFrame(summaryDict)
+        
     return summaryDf
